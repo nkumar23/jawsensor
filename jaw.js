@@ -3,8 +3,8 @@ run this in the terminal before running this node script
 sqlite3 jaw.db
 
 CREATE TABLE datatable (
-    device VARCHAR,
-    reading NUMERIC(9, 2),
+    device TEXT,
+    reading INT,
     recorded DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 */
@@ -25,10 +25,11 @@ client.on('connect', function () {
 
 client.on('message', async function (topic, message) {
   console.log(topic, message.toString());
+  const device = topic.split('/')[1];
 
   try {
     const db = await sqlite.open(database, { cached: true });
-    const result = await db.run(query, [message]);
+    const result = await db.run(query, [device,message]);
     console.log(result);
   } catch(err) {
     console.log(err.stack)
