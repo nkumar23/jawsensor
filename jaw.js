@@ -3,6 +3,7 @@ run this in the terminal before running this node script
 sqlite3 jaw.db
 
 CREATE TABLE datatable (
+    device VARCHAR,
     reading NUMERIC(9, 2),
     recorded DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -12,14 +13,14 @@ const mqtt = require('mqtt');
 const sqlite = require('sqlite');
 
 const database = 'jaw.db';
-const query = 'INSERT INTO datatable (reading) VALUES (?)';
+const query = 'INSERT INTO datatable (device,reading) VALUES (?,?)';
 
 const mqttConnectionString = "mqtts://nikhil:voucher-paternal-soever@itpdtd.com";
 
 const client  = mqtt.connect(mqttConnectionString);
 
 client.on('connect', function () {
-  client.subscribe('jawbone');
+  client.subscribe('jawbone/+');
 });
 
 client.on('message', async function (topic, message) {
