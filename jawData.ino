@@ -14,7 +14,7 @@
 WiFiSSLClient net;
 MqttClient mqtt(net);
 
-String jawTopic = "jawbone";
+String jawTopic = "jawbone/" + DEVICE_ID;
 
 
 // Publish every 10 seconds for the workshop. Real world apps need this data every 5 or 10 minutes.
